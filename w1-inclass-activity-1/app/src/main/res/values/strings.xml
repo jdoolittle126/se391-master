@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">w1-inclass-activity-1</string>
+    <string name="numberOne">Number 1</string>
+    <string name="numberTwo">Number 2</string>
+    <string name="add">Add</string>
+    <string name="subtract">Subtract</string>
+    <string name="calculate">Calculate</string>
+    <string name="invalid">Invalid input, please try again!</string>
+</resources>
