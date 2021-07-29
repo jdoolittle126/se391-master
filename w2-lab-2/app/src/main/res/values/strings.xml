@@ -1,0 +1,38 @@
+<resources>
+    <!-- Application Strings -->
+    <string name="app_name">Candy Order Lab</string>
+
+    <!-- Label Strings -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="type_of_chocolate">Type of Chocolate</string>
+    <string name="number_of_bars">Number of Bars</string>
+    <string name="shipment_type">Shipment Preferences</string>
+    <string name="save">Save</string>
+    <plurals name="order_added">
+        <item quantity="one">Order added, there is now %1$d order!</item>
+        <item quantity="other">Order added, there are now %1$d orders!</item>
+    </plurals>
+
+    <!-- Sample Strings -->
+    <string name="sample_first_name">John</string>
+    <string name="sample_last_name">Doe</string>
+    <string name="sample_number_of_bars">10</string>
+
+    <!-- Types of Shipping -->
+    <string name="normal_shipment">Normal Shipment</string>
+    <string name="expedited_shipment">Expedited Shipment</string>
+
+    <!-- Types of Candy -->
+    <string name="milk_chocolate">Milk Chocolate</string>
+    <string name="white_chocolate">White Chocolate</string>
+    <string name="dark_chocolate">Dark Chocolate</string>
+    <string name="milk_chocolate_w_almonds">Milk Chocolate with Almonds</string>
+
+    <!-- Image Desc. Strings -->
+    <string name="check_order_desc">See your orders!</string>
+
+    <!-- Validation Strings -->
+    <string name="item_must_be_filled">%1$s must be completed.</string>
+    <string name="item_must_be_positive_nonzero">%1$s must be a positive, non-zero integer.</string>
+</resources>

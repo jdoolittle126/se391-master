@@ -1,0 +1,2 @@
+rootProject.name = "w1-inclass-activity-2"
+include ':app'
