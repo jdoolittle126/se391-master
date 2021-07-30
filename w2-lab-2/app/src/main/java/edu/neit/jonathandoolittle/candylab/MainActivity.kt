@@ -1,6 +1,5 @@
 package edu.neit.jonathandoolittle.candylab
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,17 +10,11 @@ import edu.neit.jonathandoolittle.candylab.util.EditTextValidation
 class MainActivity : AppCompatActivity() {
 
     /**
-     * Provides a static array to hold [CandyOrders][CandyOrder]
+     * Launches the [OrdersActivity], passing in a [CandyOrder] object. Toasts a response on return.
      */
-    companion object OrderList {
-        var candyOrdersCompanion = ArrayList<CandyOrder>()
-    }
-
-    /**
-     * TODO
-     */
-    private val myActivityLauncher = registerForActivityResult(MyActivityResultContract()){
-            result -> Toast.makeText(applicationContext,result,Toast.LENGTH_SHORT).show()
+    private val orderResultsActivityLauncher = registerForActivityResult(OrderActivityResultContract()) {
+            result ->
+        run { updateOrderCount(result) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,10 +37,7 @@ class MainActivity : AppCompatActivity() {
         val editTextNumberOfBars = findViewById<EditText>(R.id.editTextNumberOfBars)
         val radioGroupShipmentType = findViewById<RadioGroup>(R.id.radioGroupShipmentType)
         val radioButtonShipmentType = findViewById<RadioButton>(radioGroupShipmentType.checkedRadioButtonId)
-        val textViewOrderAdded = findViewById<TextView>(R.id.textViewOrderAdded)
 
-        // RESET NOTIFICATION
-        textViewOrderAdded.text = "";
 
         // VALIDATION
         // This validation is a bit crude, but works. This will evolve depending on the direction this
@@ -84,18 +74,8 @@ class MainActivity : AppCompatActivity() {
         // ORDER CREATION
         val order = CandyOrder(orderFirstName, orderLastName, orderTypeOfChocolate, orderNumberOfBars, orderIsExpeditedShipment)
 
-        // ORDER SUBMISSION
-        //candyOrdersCompanion.add(order)
-
-        // ORDER CONFIRM
-        textViewOrderAdded.text = resources.getQuantityString(R.plurals.order_added, candyOrdersCompanion.size, candyOrdersCompanion.size)
-
-        // For demo
-        //Toast.makeText(applicationContext, order.toString(), Toast.LENGTH_SHORT).show()
-
-
-        myActivityLauncher.launch(order)
-
+        // OPEN ORDER SCREEN
+        orderResultsActivityLauncher.launch(order)
 
     }
 
@@ -108,7 +88,24 @@ class MainActivity : AppCompatActivity() {
         val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, CandyBarType.values())
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTypeOfChocolate.adapter = dataAdapter
+    }
 
+    /**
+     * Updates the label to display the correct order count
+     *
+     * @param count The new order count
+     */
+    private fun updateOrderCount(count: Int) {
+
+        // GET VIEW
+        val textViewOrderAdded = findViewById<TextView>(R.id.textViewOrderAdded)
+
+        // RESET NOTIFICATION
+        textViewOrderAdded.text = if(count == OrderActivityResultContract.defaultValue) {
+            ""
+        } else {
+            resources.getQuantityString(R.plurals.order_added, count, count)
+        }
     }
 
     /**

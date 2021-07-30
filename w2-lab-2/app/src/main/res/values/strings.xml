@@ -8,7 +8,8 @@
     <string name="type_of_chocolate">Type of Chocolate</string>
     <string name="number_of_bars">Number of Bars</string>
     <string name="shipment_type">Shipment Preferences</string>
-    <string name="save">Save</string>
+    <string name="save">Submit Order</string>
+    <string name="return_to_main">Return to Order Page</string>
     <plurals name="order_added">
         <item quantity="one">Order added, there is now %1$d order!</item>
         <item quantity="other">Order added, there are now %1$d orders!</item>
@@ -35,4 +36,8 @@
     <!-- Validation Strings -->
     <string name="item_must_be_filled">%1$s must be completed.</string>
     <string name="item_must_be_positive_nonzero">%1$s must be a positive, non-zero integer.</string>
+
+    <!-- Error Strings -->
+    <string name="generic_error_occurred">Unfortunately, an error occurred</string>
+
 </resources>
