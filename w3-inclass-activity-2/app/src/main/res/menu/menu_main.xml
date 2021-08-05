@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/optionNew"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="New"
+        android:visible="true"
+        app:showAsAction="ifRoom|ifRoom" />
+    <item
+        android:id="@+id/optionToast"
+        android:title="Toast Top Text Box"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/optionLong"
+        android:enabled="true"
+        android:title="A really long menu option to display the botton TextBox that shouldn’t fit the screen"
+        android:visible="true"
+        app:showAsAction="always" />
+</menu>

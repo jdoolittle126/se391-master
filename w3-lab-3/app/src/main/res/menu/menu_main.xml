@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/optionReset"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/reset_order_form"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/optionDoubleOrder"
+        android:enabled="true"
+        android:icon="@drawable/ic_times_two"
+        android:title="@string/double_current_order"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/optionLastOrder"
+        android:enabled="true"
+        android:title="@string/retrieve_last_order"
+        android:visible="true" />
+</menu>
