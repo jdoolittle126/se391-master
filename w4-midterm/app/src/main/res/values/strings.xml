@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">w4-midterm</string>
+    <string name="withdrawal">Withdrawal</string>
+    <string name="deposit">Deposit</string>
+    <string name="inquiry">Inquiry</string>
+    <string name="balance">Balance</string>
+    <string name="amount">Amount</string>
+    <string name="close">Close</string>
+    <string name="action">%s - $%.2f</string>
+    <string name="submit">Submit Balance</string>
+    <string name="current_balance">Current Balance = $%.2f</string>
+</resources>

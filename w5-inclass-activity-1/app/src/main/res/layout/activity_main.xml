@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentCreateOrder"
+        android:name="edu.neit.jonathandoolittle.w1_lab_1.CreateOrderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_create_order" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentOrdersList"
+        android:name="edu.neit.jonathandoolittle.w1_lab_1.CandyOrderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_candy_order_list" />
+</LinearLayout>
