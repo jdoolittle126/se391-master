@@ -7,60 +7,79 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import edu.neit.jonathandoolittle.CandyLab
 import edu.neit.jonathandoolittle.w1_lab_1.MainActivity.OrderList
 import edu.neit.jonathandoolittle.w1_lab_1.util.EditTextValidation
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
- * A simple [Fragment] subclass.
+ * A [Fragment] that holds an order form for creating [CandyOrder]s
  * Use the [CreateOrderFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 class CreateOrderFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    lateinit var myView : View
+    private lateinit var fragmentView : View
     private var fragmentListener: OrderCreationEventListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        myView = inflater.inflate(R.layout.fragment_create_order, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_create_order, container, false)
+        populateUi()
 
-        return myView
+        // Set the save button's functionality
+        fragmentView.findViewById<Button>(R.id.buttonSaveOrder).setOnClickListener {
+            onOrderSave()
+        }
+
+        return fragmentView
+    }
+
+    /**
+     * Checks if the order is null, then loads it to
+     * the order form
+     *
+     * @param order The order to add
+     */
+    fun onOrderLoad(order: CandyOrder?) {
+        if(order != null) {
+            loadOrderToForm(order)
+        }
+    }
+
+    /**
+     * Attempts to create an order, and if it is valid,
+     * clears the UI and triggers the listener function
+     */
+    private fun onOrderSave() {
+        // If the input is invalid, do nothing
+        val order = createOrder() ?: return
+
+        // Clear UI
+        clearUi()
+
+        // Trigger listener
+        fragmentListener?.onOrderCreate(order)
     }
 
     /**
      * Creates a new [CandyOrder] based on the data entered in the order form. If faced with
-     * invalid input, no order will be added to the [OrderList]
+     * invalid input, no order will be returned
      *
+     * @return The [CandyOrder] from the inputs, or null if invalid
      */
-    fun createOrder() {
+    private fun createOrder(): CandyOrder? {
         // Find everything by ID
-        val editTextFirstName = myView.findViewById<EditText>(R.id.editTextFirstName)
-        val editTextLastName = myView.findViewById<EditText>(R.id.editTextLastName)
-        val spinnerTypeOfChocolate = myView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
-        val editTextNumberOfBars = myView.findViewById<EditText>(R.id.editTextNumberOfBars)
-        val radioGroupShipmentType = myView.findViewById<RadioGroup>(R.id.radioGroupShipmentType)
-        val radioButtonShipmentType = myView.findViewById<RadioButton>(radioGroupShipmentType.checkedRadioButtonId)
-        val textViewOrderAdded = myView.findViewById<TextView>(R.id.textViewOrderAdded)
+        val editTextFirstName = fragmentView.findViewById<EditText>(R.id.editTextFirstName)
+        val editTextLastName = fragmentView.findViewById<EditText>(R.id.editTextLastName)
+        val spinnerTypeOfChocolate = fragmentView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
+        val editTextNumberOfBars = fragmentView.findViewById<EditText>(R.id.editTextNumberOfBars)
+        val radioGroupShipmentType = fragmentView.findViewById<RadioGroup>(R.id.radioGroupShipmentType)
+        val radioButtonShipmentType = fragmentView.findViewById<RadioButton>(radioGroupShipmentType.checkedRadioButtonId)
+        val textViewOrderAdded = fragmentView.findViewById<TextView>(R.id.textViewOrderAdded)
 
-        // RESET NOTIFICATION
+        // Reset Notification
         textViewOrderAdded.text = "";
 
         // VALIDATION
@@ -80,41 +99,31 @@ class CreateOrderFragment : Fragment() {
         isValid = if(editTextValidation.validateIsFilled(editTextNumberOfBars, format(R.string.item_must_be_filled, R.string.number_of_bars))) {
             isValid.and(editTextValidation.validateNumericIsGreaterThan(editTextNumberOfBars, 0.0f, format(R.string.item_must_be_positive_nonzero, R.string.number_of_bars)))
         } else {
-            false;
+            false
         }
 
         // Exit if data is invalid
         if(!isValid) {
-            return
+            return null
         }
 
-        // DATA EXTRACTION
+        // Grab all of the data
         val orderFirstName = editTextFirstName.text.toString()
         val orderLastName = editTextLastName.text.toString()
         val orderTypeOfChocolate = spinnerTypeOfChocolate.selectedItem as CandyBarType
         val orderNumberOfBars = editTextNumberOfBars.text.toString().toInt()
         val orderIsExpeditedShipment = radioButtonShipmentType.text.equals(getString(R.string.expedited_shipment))
 
-        // ORDER CREATION
-        val order = CandyOrder(orderFirstName, orderLastName, orderTypeOfChocolate, orderNumberOfBars, orderIsExpeditedShipment)
-
-        // ORDER SUBMISSION
-        OrderList.candyOrdersCompanion.add(order)
-
-        // ORDER CONFIRM
-        textViewOrderAdded.text = resources.getQuantityString(R.plurals.order_added, OrderList.candyOrdersCompanion.size, OrderList.candyOrdersCompanion.size)
-
-        // For demo
-        //Toast.makeText(applicationContext, order.toString(), Toast.LENGTH_SHORT).show()
-
+        // Creates and returns the new order
+        return CandyOrder(orderFirstName, orderLastName, orderTypeOfChocolate, orderNumberOfBars, orderIsExpeditedShipment)
     }
 
     /**
      * Populates the spinner with all of the values in [CandyBarType]
      */
     private fun populateUi() {
-        val spinnerTypeOfChocolate = myView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
-        val dataAdapter = ArrayAdapter(myView.context, android.R.layout.simple_spinner_dropdown_item, CandyBarType.values())
+        val spinnerTypeOfChocolate = fragmentView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
+        val dataAdapter = ArrayAdapter(fragmentView.context, android.R.layout.simple_spinner_dropdown_item, CandyBarType.values())
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTypeOfChocolate.adapter = dataAdapter
     }
@@ -124,11 +133,11 @@ class CreateOrderFragment : Fragment() {
      */
     private fun clearUi() {
         // Find everything by ID
-        val editTextFirstName = myView.findViewById<EditText>(R.id.editTextFirstName)
-        val editTextLastName = myView.findViewById<EditText>(R.id.editTextLastName)
-        val spinnerTypeOfChocolate = myView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
-        val editTextNumberOfBars = myView.findViewById<EditText>(R.id.editTextNumberOfBars)
-        val radioButtonShipmentNormal = myView.findViewById<RadioButton>(R.id.radioButtonShipmentNormal)
+        val editTextFirstName = fragmentView.findViewById<EditText>(R.id.editTextFirstName)
+        val editTextLastName = fragmentView.findViewById<EditText>(R.id.editTextLastName)
+        val spinnerTypeOfChocolate = fragmentView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
+        val editTextNumberOfBars = fragmentView.findViewById<EditText>(R.id.editTextNumberOfBars)
+        val radioButtonShipmentNormal = fragmentView.findViewById<RadioButton>(R.id.radioButtonShipmentNormal)
 
         // Reset
         editTextFirstName.setText("")
@@ -153,23 +162,36 @@ class CreateOrderFragment : Fragment() {
         return String.format(getString(baseResource), getString(nameResource))
     }
 
-    // --------------------
+    /**
+     * Loads a given order to the order form
+     * @param order The [CandyOrder] to load
+     */
+    private fun loadOrderToForm(order: CandyOrder) {
+        val editTextFirstName = fragmentView.findViewById<EditText>(R.id.editTextFirstName)
+        val editTextLastName = fragmentView.findViewById<EditText>(R.id.editTextLastName)
+        val spinnerTypeOfChocolate = fragmentView.findViewById<Spinner>(R.id.spinnerTypeOfChocolate)
+        val editTextNumberOfBars = fragmentView.findViewById<EditText>(R.id.editTextNumberOfBars)
+        val radioGroupShipping = fragmentView.findViewById<RadioGroup>(R.id.radioGroupShipmentType)
 
-    fun LoadFragmentData(data: String?) {
-        var txtValue = myView.findViewById<TextView>(R.id.txtValue)
-        txtValue.text = data
-    }
+        editTextFirstName.setText(order.customerFirstName)
+        editTextLastName.setText(order.customerLastName)
 
-    fun onButtonPressed(valueToPass: String) {
-        fragmentListener?.sendBlankFragmentValue(valueToPass)
+        spinnerTypeOfChocolate.setSelection(CandyBarType.values().indexOf(order.candyBarType), true)
+        editTextNumberOfBars.setText(order.candyBarQuantity.toString())
+
+        if(order.expeditedShipping) {
+            radioGroupShipping.check(R.id.radioButtonShipmentExpedited)
+        } else {
+            radioGroupShipping.check(R.id.radioButtonShipmentNormal)
+        }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
+        if (context is OrderCreationEventListener) {
             fragmentListener = context
         } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OrderCreationEventListener")
         }
     }
 
@@ -179,32 +201,24 @@ class CreateOrderFragment : Fragment() {
     }
 
     /**
-     * TODO
+     * Provides a listener for when [CandyOrder]s are created in this fragment
      */
     interface OrderCreationEventListener {
         /**
-         * TODO
+         * Triggered when a [CandyOrder] is created.
+         *
+         * @param candyOrder The newly created order
          */
         fun onOrderCreate(candyOrder: CandyOrder)
     }
 
     companion object {
         /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
+         * Factory create CreateOrderFragment
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment CreateOrderFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CreateOrderFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = CreateOrderFragment().apply {}
     }
 }
