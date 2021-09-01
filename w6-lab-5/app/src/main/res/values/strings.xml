@@ -1,7 +1,7 @@
 <resources>
     <!-- Application Strings -->
     <string name="app_name">Candy Order Lab</string>
-
+    <string name="congrats">Congrats on the order!</string>
 
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->

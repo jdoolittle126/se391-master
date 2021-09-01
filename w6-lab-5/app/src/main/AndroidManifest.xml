@@ -3,6 +3,7 @@
     package="edu.neit.jonathandoolittle.w6_lab_5">
 
     <application
+        android:name="edu.neit.jonathandoolittle.CandyLab"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
