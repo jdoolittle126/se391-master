@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.neit.jonathandoolittle.w7_group_project">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    package="com.android.neit.basicbankaccountprogram">
 
     <application
         android:allowBackup="true"
@@ -9,11 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.W7groupproject">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+        android:theme="@style/Theme.BasicBankAccountProgram">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
