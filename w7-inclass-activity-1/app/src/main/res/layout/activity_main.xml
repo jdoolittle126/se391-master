@@ -12,9 +12,9 @@
             android:id="@+id/textView" />
 
         <EditText
+            android:id="@+id/txtID"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtID" />
+            android:layout_height="wrap_content" />
     </TableRow>
 
     <TableRow>
