@@ -1,7 +1,14 @@
 package edu.neit.jonathandoolittle.candylab
 
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.IGNORE
+import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
+
 /**
- * 
+ *
  * Class Description - TODO
  *
  * Class Logic - TODO
@@ -15,18 +22,25 @@ package edu.neit.jonathandoolittle.candylab
  *
  */
 
-class CandyOrderDao {
+@Dao
+interface CandyOrderDao {
 
-	// ******************************
-	// Variables
-	// ******************************
-	
-	// ******************************
-	// Public methods
-	// ******************************
-	
-	// ******************************
-	// Private methods
-	// ******************************
+    @Insert(onConflict = REPLACE)
+    fun insert(vararg orders: CandyOrder)
+
+    @Delete
+    fun delete(vararg orders: CandyOrder)
+
+    @Query("SELECT * FROM CandyOrder")
+    fun getAll(): List<CandyOrder>
+
+    @Query("SELECT COUNT(*) FROM CandyOrder")
+    fun getCount(): Int
+
+    @Query("SELECT * FROM CandyOrder WHERE id = :id")
+    fun getById(id: Int): CandyOrder
+
+    @Query("SELECT * FROM CandyOrder WHERE totalPrice > :price")
+    fun getWherePriceGreatThan(price: Float): List<CandyOrder>
 
 }
